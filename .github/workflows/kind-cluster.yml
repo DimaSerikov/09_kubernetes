@@ -1,0 +1,28 @@
+name: Set up KinD Cluster
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup-kind-cluster:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Set up KinD
+        uses: engineerd/setup-kind@v0.5.0
+        with:
+          version: v0.11.1  # Replace with the version of KinD you want to use
+
+      - name: Create KinD cluster
+        run: kind create cluster --name kind-cluster
+
+      - name: Verify Cluster
+        run: kubectl get nodes
